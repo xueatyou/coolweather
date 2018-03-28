@@ -1,0 +1,10 @@
+<litepal>
+    <dbname  value="coolWeather"/>
+    <version value="1.0"/>
+    <list>
+        <mapping class="com.example.bianlifeng.coolweather.database.City"/>
+        <mapping class="com.example.bianlifeng.coolweather.database.County"/>
+        <mapping class="com.example.bianlifeng.coolweather.database.Province"/>
+    </list>
+
+</litepal>
