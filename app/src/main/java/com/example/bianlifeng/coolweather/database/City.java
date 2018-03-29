@@ -12,6 +12,13 @@ public class City extends DataSupport {
     int cityId;
     int provinceId;
 
+    public City(){
+
+        cityId=1;
+        cityName = "北京";
+
+    }
+
     public void setProvinceId(int provinceId) {
         this.provinceId = provinceId;
     }

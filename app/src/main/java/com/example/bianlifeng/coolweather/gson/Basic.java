@@ -9,10 +9,10 @@ import com.google.gson.annotations.SerializedName;
 public class Basic {
 
     @SerializedName("city")     //让json字段与java类建立映射关系
-    public  String name;
+    public  String cityName;
 
     @SerializedName("id")
-    public  String weatherid;
+    public  String weatherId;
 
     public Update update;
 
