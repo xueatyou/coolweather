@@ -104,8 +104,11 @@ public class ChooseAreaFragement extends Fragment {
                     selectedCity=cityList.get(position);
                     queryCountries();
                 }else if (currentLevel == LEVEL_COUNTY){
-                    Log.d("进入weather页面", "onItemClick:county ："+selectedCity);
                     String weatherId = countyList.get(position).getWeatherId();
+                    int selectedcountyid=countyList.get(position).getCountyid();
+                    Log.d("进入weather页面", "onItemClick:county ："+selectedCity.getCityName()
+                            +"   weatherid="+weatherId+" selectedid :"+selectedcountyid);
+
                     Intent intent = new Intent(getActivity(),WeatherActivity.class);
                     intent.putExtra("weather_id",weatherId);
                     startActivity(intent);
@@ -113,19 +116,19 @@ public class ChooseAreaFragement extends Fragment {
                     getActivity().finish();
                 }
 
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(currentLevel == LEVEL_CITY){
+                            queryProvince();
+                        }else if(currentLevel == LEVEL_COUNTY){
+                            queryCities();
+                        }
+                    }
+                });
+            }
+        });
 
-            }
-        });
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(currentLevel == LEVEL_CITY){
-                    queryProvince();
-                }else if(currentLevel == LEVEL_COUNTY){
-                    queryCities();
-                }
-            }
-        });
         Log.d(TAG, "onActivityCreated: pre queryprovince()");
         queryProvince();
     }
@@ -156,7 +159,7 @@ public class ChooseAreaFragement extends Fragment {
     private void queryCities(){
         Log.d(TAG, "queryCities: "+selectedProvince.getProvinceId());
         titleText.setText(selectedProvince.getProvinceName());
-        button.setVisibility(View.INVISIBLE);
+        button.setVisibility(View.VISIBLE);
 
         cityList=DataSupport.where("provinceid = ?",
                 String.valueOf(selectedProvince.getId())).find(City.class);
@@ -184,7 +187,7 @@ public class ChooseAreaFragement extends Fragment {
     private void queryCountries(){
         Log.d(TAG, "queryCountries: ");
         titleText.setText(selectedCity.getCityName());
-        button.setVisibility(View.INVISIBLE);
+        button.setVisibility(View.VISIBLE);
         countyList=DataSupport.where("cityid = ?",
                 String.valueOf(selectedCity.getCityId())).find(County.class);
 
@@ -235,14 +238,11 @@ public class ChooseAreaFragement extends Fragment {
                 boolean result = false;
                 if(type.equals("city")){
                     Log.d(TAG, "onResponse: type = "+type);
-
                     result= Utility.handleCityResponse(responseText,
                             selectedProvince.getId());
                 }else if (type.equals("county")){
                     Log.d(TAG, "onResponse: type = "+type);
-
                     result=Utility.handleCountyResponse(responseText,selectedCity.getCityId());
-
                 }else if (type.equals("province")){
                     Log.d(TAG, "onResponse: type = "+type);
                     result=Utility.handleProvinceResponse(responseText);
@@ -254,10 +254,9 @@ public class ChooseAreaFragement extends Fragment {
                             closeProgressDialog();
                             if("province".equals(type)){
                                 queryProvince();
-
                             }else if ("city".equals(type)){
                                 queryCities();
-                            }else if ("conuty".equals(type)){
+                            }else if ("county".equals(type)){
                                 queryCountries();
                             }
                         }

@@ -13,6 +13,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import static android.content.ContentValues.TAG;
+
 /**
  * Created by bianlifeng on 2018/3/28.
  */
@@ -94,13 +96,15 @@ public class Utility {
     }
 
     public static Weather handleWeatherResponse(String response){
-        System.out.println("Utility-》handleWeatherResponse" +response+"  ");
+        System.out.println("Utility-》handleWeatherResponse" +response);
 
         try {
             JSONObject jsonObject = new JSONObject(response);
             JSONArray jsonArray = jsonObject.getJSONArray("HeWeather");
             String weatherContent = jsonArray.getJSONObject(0).toString();
-            return new Gson().fromJson(weatherContent,Weather.class);
+           Weather weather= new Gson().fromJson(weatherContent,Weather.class);
+            Log.d(TAG, "handleWeatherResponse: "+weather.now.temperature);
+            return weather;
         } catch (JSONException e) {
             e.printStackTrace();
         }
